@@ -7,44 +7,52 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f0f9ff; /* sky-50 */
-            --text-color: #0c0a09; /* stone-950 */
-            --header-bg: #111827; /* gray-900 */
-            --header-text: #f9fafb; /* gray-50 */
-            --header-border: #f9fafb; /* gray-50 */
+            --bg-color: #f8fafc; /* slate-50 */
+            --text-color: #020617; /* slate-950 */
+            --header-bg: #1e293b; /* slate-800 */
+            --header-text: #f1f5f9; /* slate-100 */
+            --header-border: #475569; /* slate-600 */
             --card-bg: #ffffff;
             --card-border: #e2e8f0; /* slate-200 */
-            --primary-color: #7c3aed; /* violet-600 */
+            --primary-color: #4f46e5; /* indigo-600 */
             --primary-text: #ffffff;
             --secondary-color: #f59e0b; /* amber-500 */
-            --formula-bg: #fefce8; /* yellow-50 */
-            --formula-text: #854d0e; /* yellow-800 */
-            --formula-border: #facc15; /* yellow-400 */
-            --tooltip-bg: #1e293b; /* slate-800 */
-            --tooltip-text: #f8fafc; /* slate-50 */
+            --secondary-text: #020617;
+            --formula-bg: #f1f5f9; /* slate-100 */
+            --formula-text: #1e293b; /* slate-800 */
+            --formula-border: #cbd5e1; /* slate-300 */
+            --tooltip-bg: #0f172a; /* slate-900 */
+            --tooltip-text: #f1f5f9; /* slate-100 */
+            --interactive-var-bg: #eef2ff; /* indigo-50 */
+            --interactive-var-text: #3730a3; /* indigo-800 */
+            --interactive-var-border: #c7d2fe; /* indigo-200 */
         }
 
         html.dark {
-            --bg-color: #0c1427;
+            --bg-color: #020617; /* slate-950 */
             --text-color: #e2e8f0; /* slate-200 */
-            --header-bg: #020617; /* slate-950 */
+            --header-bg: #0f172a; /* slate-900 */
             --header-text: #f1f5f9; /* slate-100 */
             --header-border: #334155; /* slate-700 */
             --card-bg: #1e293b; /* slate-800 */
             --card-border: #334155; /* slate-700 */
-            --primary-color: #a78bfa; /* violet-400 */
-            --primary-text: #0c0a09;
+            --primary-color: #818cf8; /* indigo-400 */
+            --primary-text: #020617;
             --secondary-color: #fcd34d; /* amber-300 */
-            --formula-bg: #1e293b; /* slate-800 */
-            --formula-text: #fef08a; /* yellow-200 */
-            --formula-border: #f59e0b; /* amber-500 */
+            --secondary-text: #020617;
+            --formula-bg: #0f172a; /* slate-900 */
+            --formula-text: #e2e8f0; /* slate-200 */
+            --formula-border: #334155; /* slate-700 */
+            --interactive-var-bg: #312e81; /* indigo-900 */
+            --interactive-var-text: #e0e7ff; /* indigo-200 */
+            --interactive-var-border: #4338ca; /* indigo-700 */
         }
 
         body {
-            font-family: 'Nunito', sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
             transition: background-color 0.3s, color 0.3s;
@@ -55,20 +63,26 @@
         .formula {
             background-color: var(--formula-bg);
             padding: 1.5rem;
-            border-radius: 1rem;
+            border-radius: 0.5rem;
             margin: 1rem 0;
             text-align: center;
             font-size: 1.25rem;
             color: var(--formula-text);
-            border: 2px dashed var(--formula-border);
+            border: 1px solid var(--formula-border);
             font-weight: bold;
+            overflow-x: auto;
+            white-space: nowrap;
         }
         .interactive-var {
-            color: var(--primary-color);
+            background-color: var(--interactive-var-bg);
+            color: var(--interactive-var-text);
+            border: 1px solid var(--interactive-var-border);
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.375rem;
+            font-weight: 800;
             cursor: pointer;
             position: relative;
             display: inline-block;
-            font-weight: 800;
         }
         .tooltip {
             visibility: hidden;
@@ -85,7 +99,7 @@
             margin-left: -125px;
             opacity: 0;
             transition: opacity 0.3s;
-            font-family: 'Nunito', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-size: 0.9rem;
             line-height: 1.4;
         }
@@ -102,33 +116,27 @@
             visibility: visible;
             opacity: 1;
         }
-        .accordion-header { cursor: pointer; }
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
-        }
     </style>
 </head>
-<body class="bg-sky-50 text-stone-950">
+<body class="text-stone-950">
 
     <!-- Cabeçalho Fixo -->
     <header class="fixed top-0 left-0 right-0 z-30 shadow-md" style="background-color: var(--header-bg); border-bottom: 2px solid var(--header-border);">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div class="flex items-center justify-between h-16">
-                <h1 class="text-xl font-extrabold" style="color: var(--header-text);">Guia de Finanças</h1>
+                <h1 class="text-xl font-extrabold" style="color: var(--header-text);">Guia de Finanças Corporativas</h1>
                 <div class="flex items-center space-x-3">
-                    <button id="theme-toggle" class="p-2 rounded-full text-gray-300 hover:bg-gray-700 focus:outline-none">
+                    <button id="theme-toggle" class="p-2 rounded-full text-gray-300 hover:bg-slate-700 focus:outline-none">
                         <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                         <svg id="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
                     </button>
                     <div class="relative">
-                        <button id="nav-toggle" class="p-2 rounded-full text-gray-300 hover:bg-gray-700 focus:outline-none">
+                        <button id="nav-toggle" class="p-2 rounded-full text-gray-300 hover:bg-slate-700 focus:outline-none">
                              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18v-2h18v2H3Zm0-5v-2h18v2H3Zm0-5V6h18v2H3Z"/></svg>
                         </button>
                         <div id="nav-menu" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5" style="background-color: var(--card-bg);">
-                            <a href="#introducao" class="block px-4 py-2 text-sm" style="color: var(--text-color);">Introdução</a>
-                            <a href="#wacc" class="block px-4 py-2 text-sm" style="color: var(--text-color);">Cálculo WACC</a>
+                            <a href="#introducao" class="block px-4 py-2 text-sm nav-link" style="color: var(--text-color);">Introdução</a>
+                            <a href="#wacc" class="block px-4 py-2 text-sm nav-link" style="color: var(--text-color);">Cálculo WACC</a>
                         </div>
                     </div>
                 </div>
@@ -137,7 +145,7 @@
     </header>
 
     <!-- Botão Flutuante de Retorno -->
-    <button id="back-to-home" class="hidden fixed bottom-5 right-5 bg-violet-600 text-white w-16 h-16 rounded-2xl shadow-lg z-20 flex items-center justify-center transform hover:scale-110 transition-transform" title="Voltar à página principal">
+    <button id="back-to-home" class="hidden fixed bottom-5 right-5 bg-indigo-600 text-white w-16 h-16 rounded-2xl shadow-lg z-20 flex items-center justify-center transform hover:scale-110 transition-transform" title="Voltar à página principal">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" /></svg>
     </button>
     
@@ -145,30 +153,33 @@
         <!-- Página Principal -->
         <div id="page-home" class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-5xl">
             <main class="space-y-12">
-                <section id="introducao" class="p-6 rounded-2xl shadow-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);">
+                <section id="introducao" class="p-6 rounded-lg shadow-lg border" style="background-color: var(--card-bg); border-color: var(--card-border);">
                     <h2 class="text-3xl font-extrabold mb-4" style="color: var(--primary-color);">Introdução ao Custo de Capital</h2>
                     <p class="text-lg leading-relaxed">A sustentabilidade financeira de uma empresa depende de decisões de investimento sólidas. Um conceito central para essa análise é o <span class="interactive-var">Custo Médio Ponderado de Capital (WACC)<span class="tooltip"><b>WACC (Weighted Average Cost of Capital):</b> Representa o custo médio dos capitais (próprio e de terceiros) que financiam os ativos da empresa. É a taxa mínima de retorno que um projeto deve gerar para agregar valor.</span></span>, que serve como uma taxa de desconto para avaliar a viabilidade de novos projetos e investimentos.</p>
                 </section>
 
-                <section id="wacc" class="p-6 rounded-2xl shadow-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);">
-                    <h2 class="text-3xl font-extrabold mb-6" style="color: var(--primary-color);">Calculando a Taxa de Remuneração (WACC)</h2>
-                    <p class="mb-4 text-lg">A fórmula geral para o WACC é:</p>
-                    <div class="formula">WACC = (<span class="interactive-var">Ke<span class="tooltip"><b>Ke (Custo do Capital Próprio):</b> É o retorno que os acionistas esperam. Clique no botão 'Calcular Ke' para ir à página de cálculo detalhado.</span></span> × <span class="interactive-var">E<span class="tooltip"><b>E / (D+E):</b> Proporção de Capital Próprio na estrutura de capital.</span></span>) + (<span class="interactive-var">Kd<span class="tooltip"><b>Kd (Custo da Dívida):</b> Custo médio que a empresa paga por seus empréstimos.</span></span> × (1-<span class="interactive-var">T<span class="tooltip"><b>T (Alíquota de Impostos):</b> Impostos sobre o lucro. O termo (1-T) representa o "escudo fiscal" da dívida.</span></span>) × <span class="interactive-var">D<span class="tooltip"><b>D / (D+E):</b> Proporção de Dívida na estrutura de capital.</span></span>)</div>
+                <section id="wacc" class="p-6 rounded-lg shadow-lg border" style="background-color: var(--card-bg); border-color: var(--card-border);">
+                    <h2 class="text-3xl font-extrabold mb-6" style="color: var(--primary-color);">Calculando o Custo Médio Ponderado de Capital (WACC)</h2>
+                    <p class="mb-4 text-lg">A fórmula geral para o WACC pondera o custo de cada fonte de capital:</p>
+                    <div class="formula">WACC = (<span class="interactive-var">Ke<span class="tooltip"><b>Ke (Custo do Capital Próprio):</b> É o retorno que os acionistas esperam.</span></span> × <span class="interactive-var">E/(D+E)<span class="tooltip"><b>Proporção de Capital Próprio:</b> A porcentagem do financiamento da empresa que vem dos acionistas (Equity).</span></span>) + (<span class="interactive-var">Kd<span class="tooltip"><b>Kd (Custo da Dívida):</b> Custo médio que a empresa paga por seus empréstimos.</span></span> × (1-<span class="interactive-var">T<span class="tooltip"><b>T (Alíquota de Impostos):</b> Impostos sobre o lucro. O termo (1-T) representa o "escudo fiscal" da dívida.</span></span>) × <span class="interactive-var">D/(D+E)<span class="tooltip"><b>Proporção de Dívida:</b> A porcentagem do financiamento da empresa que vem de terceiros (Debt).</span></span>)</div>
+                    
+                    <div class="mt-6 text-center">
+                        <button class="g-to-ke-page font-bold py-2 px-4 rounded-lg transition-colors" style="background-color: var(--primary-color); color: var(--primary-text);">
+                            Calcular Componente <span class="font-extrabold">Ke</span> &rarr;
+                        </button>
+                    </div>
 
                     <div class="mt-8">
                         <h3 class="text-2xl font-bold mb-4" style="color: var(--primary-color);">Calculadora WACC</h3>
                         <div class="p-6 rounded-xl border-2 space-y-4" style="background-color: var(--bg-color); border-color: var(--card-border);">
                             <div class="grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <label for="keInput" class="font-bold">Custo do Capital Próprio (Ke) em %</label>
-                                    <div class="flex items-center"><input type="number" id="keInput" placeholder="Ex: 12.5" class="w-full p-2 rounded-l-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"><button class="g-to-ke-page p-2 rounded-r-lg font-bold" style="background-color: var(--primary-color); color: var(--primary-text);">Calcular Ke</button></div>
-                                </div>
+                                <div><label for="keInput" class="font-bold">Custo do Capital Próprio (Ke) em %</label><input type="number" id="keInput" placeholder="Calculado na pág. Ke" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
                                 <div><label for="eInput" class="font-bold">Capital Próprio (E) em %</label><input type="number" id="eInput" placeholder="Ex: 60" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
                                 <div><label for="kdInput" class="font-bold">Custo da Dívida (Kd) em %</label><input type="number" id="kdInput" placeholder="Ex: 5" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
                                 <div><label for="dInput" class="font-bold">Dívida (D) em %</label><input type="number" id="dInput" placeholder="Ex: 40" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
                                 <div><label for="tInput" class="font-bold">Impostos (T) em %</label><input type="number" id="tInput" placeholder="Ex: 34" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
                             </div>
-                            <button id="calculateWacc" class="w-full font-bold p-3 rounded-lg text-xl transition-colors" style="background-color: var(--secondary-color); color: var(--text-color);">Calcular WACC</button>
+                            <button id="calculateWacc" class="w-full font-bold p-3 rounded-lg text-xl transition-colors" style="background-color: var(--secondary-color); color: var(--secondary-text);">Calcular WACC</button>
                             <div id="waccResult" class="text-center font-bold text-3xl mt-4" style="color: var(--primary-color);"></div>
                         </div>
                     </div>
@@ -178,23 +189,27 @@
 
         <!-- Página para Cálculo do Ke -->
         <div id="page-ke" class="hidden container mx-auto p-4 sm:p-6 lg:p-8 max-w-5xl">
-            <section class="p-6 rounded-2xl shadow-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);">
+            <section class="p-6 rounded-lg shadow-lg border" style="background-color: var(--card-bg); border-color: var(--card-border);">
                 <h2 class="text-3xl font-extrabold mb-4" style="color: var(--primary-color);">Página de Cálculo do Custo de Capital Próprio (Ke)</h2>
                 <p class="mb-4 text-lg">O Ke é calculado com o modelo <span class="interactive-var">CAPM<span class="tooltip"><b>CAPM (Capital Asset Pricing Model):</b> Um modelo que descreve a relação entre o risco sistêmico e o retorno esperado para os ativos.</span></span>.</p>
-                <div class="formula">Ke = <span class="interactive-var">Rf<span class="tooltip"><b>Rf (Taxa Livre de Risco):</b> O retorno de um investimento sem risco (ex: títulos do governo de um país estável).</span></span> + <span class="interactive-var">β<span class="tooltip"><b>β (Beta):</b> Mede a volatilidade de um ativo em relação ao mercado. Clique em 'Calcular Beta' para ir à página de cálculo.</span></span> × (<span class="interactive-var">Rm - Rf<span class="tooltip"><b>(Rm - Rf) ou Prêmio de Risco de Mercado:</b> O retorno adicional que os investidores esperam por investir no mercado de ações em vez de um ativo sem risco.</span></span>) + <span class="interactive-var">Risco-País<span class="tooltip"><b>Prêmio de Risco-País:</b> Compensação pelos riscos adicionais de se investir em um mercado emergente.</span></span></div>
+                <div class="formula">Ke = <span class="interactive-var">Rf<span class="tooltip"><b>Rf (Taxa Livre de Risco):</b> O retorno de um investimento sem risco (ex: títulos do governo de um país estável).</span></span> + <span class="interactive-var">β<span class="tooltip"><b>β (Beta):</b> Mede a volatilidade de um ativo em relação ao mercado.</span></span> × (<span class="interactive-var">Rm - Rf<span class="tooltip"><b>(Rm - Rf) ou Prêmio de Risco de Mercado:</b> O retorno adicional que os investidores esperam por investir no mercado de ações em vez de um ativo sem risco.</span></span>) + <span class="interactive-var">Risco-País<span class="tooltip"><b>Prêmio de Risco-País:</b> Compensação pelos riscos adicionais de se investir em um mercado emergente.</span></span></div>
+                
+                 <div class="mt-6 text-center">
+                    <button class="g-to-beta-page font-bold py-2 px-4 rounded-lg transition-colors" style="background-color: var(--primary-color); color: var(--primary-text);">
+                        Calcular Componente <span class="font-extrabold">β</span> &rarr;
+                    </button>
+                </div>
+
                 <div class="mt-8">
                     <h3 class="text-2xl font-bold mb-4" style="color: var(--primary-color);">Calculadora Ke</h3>
                     <div class="p-6 rounded-xl border-2 space-y-4" style="background-color: var(--bg-color); border-color: var(--card-border);">
                         <div class="grid md:grid-cols-2 gap-4">
                             <div><label for="rfInput" class="font-bold">Taxa Livre de Risco (Rf) em %</label><input type="number" id="rfInput" placeholder="Ex: 2.5" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
-                            <div>
-                                <label for="betaInput" class="font-bold">Beta (β)</label>
-                                <div class="flex items-center"><input type="number" id="betaInput" placeholder="Ex: 1.2" class="w-full p-2 rounded-l-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"><button class="g-to-beta-page p-2 rounded-r-lg font-bold" style="background-color: var(--primary-color); color: var(--primary-text);">Calcular β</button></div>
-                            </div>
+                            <div><label for="betaInput" class="font-bold">Beta (β)</label><input type="number" id="betaInput" placeholder="Calculado na pág. Beta" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
                             <div><label for="rmInput" class="font-bold">Retorno de Mercado (Rm) em %</label><input type="number" id="rmInput" placeholder="Ex: 10" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
                             <div><label for="prpInput" class="font-bold">Prêmio Risco-País em %</label><input type="number" id="prpInput" placeholder="Ex: 3" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
                         </div>
-                        <button id="calculateKe" class="w-full font-bold p-3 rounded-lg text-xl" style="background-color: var(--secondary-color); color: var(--text-color);">Calcular Ke</button>
+                        <button id="calculateKe" class="w-full font-bold p-3 rounded-lg text-xl" style="background-color: var(--secondary-color); color: var(--secondary-text);">Calcular Ke</button>
                         <div id="keResult" class="text-center font-bold text-3xl mt-4" style="color: var(--primary-color);"></div>
                     </div>
                 </div>
@@ -203,7 +218,7 @@
 
         <!-- Página para Cálculo do Beta -->
         <div id="page-beta" class="hidden container mx-auto p-4 sm:p-6 lg:p-8 max-w-5xl">
-            <section class="p-6 rounded-2xl shadow-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);">
+            <section class="p-6 rounded-lg shadow-lg border" style="background-color: var(--card-bg); border-color: var(--card-border);">
                 <h2 class="text-3xl font-extrabold mb-4" style="color: var(--primary-color);">Página de Cálculo do Beta (β)</h2>
                 <p class="mb-4 text-lg">O Beta mede o risco sistêmico de um ativo. Ele é calculado pela razão entre a covariância do retorno do ativo com o retorno do mercado, e a variância do retorno do mercado.</p>
                 <div class="formula">β = <span class="interactive-var">Cov (Ra, Rm)<span class="tooltip"><b>Covariância (Ativo, Mercado):</b> Mede como os retornos de um ativo se movem em conjunto com os retornos do mercado.</span></span> / <span class="interactive-var">Var (Rm)<span class="tooltip"><b>Variância (Mercado):</b> Mede a dispersão dos retornos do mercado em torno de sua média.</span></span></div>
@@ -214,7 +229,7 @@
                             <div><label for="covInput" class="font-bold">Covariância (ativo, mercado)</label><input type="number" step="0.001" id="covInput" placeholder="Ex: 0.025" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
                             <div><label for="varInput" class="font-bold">Variância (mercado)</label><input type="number" step="0.001" id="varInput" placeholder="Ex: 0.020" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
                         </div>
-                        <button id="calculateBeta" class="w-full font-bold p-3 rounded-lg text-xl" style="background-color: var(--secondary-color); color: var(--text-color);">Calcular Beta</button>
+                        <button id="calculateBeta" class="w-full font-bold p-3 rounded-lg text-xl" style="background-color: var(--secondary-color); color: var(--secondary-text);">Calcular Beta</button>
                         <div id="betaResult" class="text-center font-bold text-3xl mt-4" style="color: var(--primary-color);"></div>
                     </div>
                 </div>
@@ -251,12 +266,18 @@
         // --- Navigation Menu ---
         const navToggle = document.getElementById('nav-toggle');
         const navMenu = document.getElementById('nav-menu');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
         navToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             navMenu.classList.toggle('hidden');
         });
         document.addEventListener('click', () => navMenu.classList.add('hidden'));
         navMenu.addEventListener('click', (e) => e.stopPropagation());
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => navMenu.classList.add('hidden'));
+        });
+
 
         // --- Page Navigation ---
         const pages = {
@@ -276,18 +297,6 @@
         document.querySelectorAll('.g-to-ke-page').forEach(btn => btn.addEventListener('click', () => showPage('ke')));
         document.querySelectorAll('.g-to-beta-page').forEach(btn => btn.addEventListener('click', () => showPage('beta')));
         backToHomeBtn.addEventListener('click', () => showPage('home'));
-
-        // --- Accordion Logic ---
-        document.querySelectorAll('.accordion-header').forEach(header => {
-            header.addEventListener('click', () => {
-                const content = header.nextElementSibling;
-                if (content.style.maxHeight) {
-                    content.style.maxHeight = null;
-                } else {
-                    content.style.maxHeight = content.scrollHeight + "px";
-                }
-            });
-        });
         
         // --- Tooltip Logic ---
         document.addEventListener('click', (e) => {
@@ -301,7 +310,7 @@
         // --- Calculators ---
         const showAlert = (message) => {
             const alertBox = document.createElement('div');
-            alertBox.style.cssText = 'position:fixed; top:80px; left:50%; transform:translateX(-50%); background-color: var(--primary-color); color: var(--primary-text); padding: 1rem 2rem; border-radius: 0.5rem; z-index: 100; font-weight: bold;';
+            alertBox.style.cssText = 'position:fixed; top:80px; left:50%; transform:translateX(-50%); background-color: var(--primary-color); color: var(--primary-text); padding: 1rem 2rem; border-radius: 0.5rem; z-index: 100; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1);';
             alertBox.innerText = message;
             document.body.appendChild(alertBox);
             setTimeout(() => {

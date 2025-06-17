@@ -25,8 +25,8 @@
             --formula-bg: #f1f5f9; /* slate-100 */
             --formula-text: #1e293b; /* slate-800 */
             --formula-border: #cbd5e1; /* slate-300 */
-            --tooltip-bg: #0f172a; /* slate-900 */
-            --tooltip-text: #f1f5f9; /* slate-100 */
+            --modal-bg: rgba(0, 0, 0, 0.6);
+            --modal-content-bg: #ffffff;
             --interactive-var-bg: #dbeafe; /* blue-100 */
             --interactive-var-text: #1e3a8a; /* blue-800 */
             --interactive-var-border: #bfdbfe; /* blue-200 */
@@ -48,12 +48,13 @@
             --formula-bg: #0f172a; /* slate-900 */
             --formula-text: #e2e8f0; /* slate-200 */
             --formula-border: #334155; /* slate-700 */
+            --modal-content-bg: #1e293b;
             --interactive-var-bg: #1e3a8a; /* blue-900 */
             --interactive-var-text: #dbeafe; /* blue-100 */
             --interactive-var-border: #2563eb; /* blue-600 */
         }
 
-        body {
+        body, html {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
@@ -99,38 +100,72 @@
             position: relative;
             display: inline-block;
         }
-        .tooltip {
+        
+        /* Modal Styles */
+        .modal-overlay {
             visibility: hidden;
-            width: 250px;
-            background-color: var(--tooltip-bg);
-            color: var(--tooltip-text);
-            text-align: center;
-            border-radius: 6px;
-            padding: 10px;
-            position: absolute;
-            z-index: 10;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -125px;
+            position: fixed;
+            inset: 0;
+            background-color: var(--modal-bg);
+            z-index: 40;
             opacity: 0;
-            transition: opacity 0.3s;
-            font-family: 'Inter', sans-serif;
-            font-size: 0.9rem;
-            line-height: 1.4;
+            transition: opacity 0.3s, visibility 0.3s;
         }
-        .tooltip::after {
-            content: "";
-            position: absolute;
-            top: 100%; left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: var(--tooltip-bg) transparent transparent transparent;
-        }
-        .interactive-var.active .tooltip {
+        .modal-overlay.active {
             visibility: visible;
             opacity: 1;
         }
+        .modal-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.95);
+            background-color: var(--modal-content-bg);
+            color: var(--text-color);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            z-index: 50;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s;
+        }
+        .modal-overlay.active .modal-container {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: none;
+            border: 2px solid #ef4444; /* red-500 */
+            color: #ef4444;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--title-color);
+            margin-bottom: 1rem;
+        }
+        .modal-body p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+         .modal-body strong {
+            color: var(--title-color);
+         }
     </style>
 </head>
 <body class="text-slate-950">
@@ -159,6 +194,15 @@
         </div>
     </header>
 
+    <!-- Modal -->
+    <div id="modal" class="modal-overlay">
+        <div class="modal-container">
+            <button class="modal-close-btn">&times;</button>
+            <h2 id="modal-title" class="modal-title"></h2>
+            <div id="modal-body" class="modal-body"></div>
+        </div>
+    </div>
+
     <!-- Botão Flutuante de Retorno -->
     <button id="back-to-home" class="hidden fixed bottom-5 right-5 text-white w-16 h-16 rounded-2xl shadow-lg z-20 flex items-center justify-center transform hover:scale-110 transition-transform" style="background-color: var(--primary-btn-bg);" title="Voltar à página principal">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" /></svg>
@@ -170,13 +214,13 @@
             <main class="space-y-12">
                 <section id="introducao" class="p-6 rounded-lg shadow-lg border" style="background-color: var(--card-bg); border-color: var(--card-border);">
                     <h2>Introdução ao Custo de Capital</h2>
-                    <p class="text-lg leading-relaxed">A sustentabilidade financeira de uma empresa depende de decisões de investimento sólidas. Um conceito central para essa análise é o <span class="interactive-var">Custo Médio Ponderado de Capital (WACC)<span class="tooltip"><b>WACC (Weighted Average Cost of Capital):</b> Representa o custo médio dos capitais (próprio e de terceiros) que financiam os ativos da empresa. É a taxa mínima de retorno que um projeto deve gerar para agregar valor.</span></span>, que serve como uma taxa de desconto para avaliar a viabilidade de novos projetos e investimentos.</p>
+                    <p class="text-lg leading-relaxed">A sustentabilidade financeira de uma empresa depende de decisões de investimento sólidas. Um conceito central para essa análise é o <span class="interactive-var" data-title="Custo Médio Ponderado de Capital (WACC)">WACC (Weighted Average Cost of Capital): Representa o custo médio dos capitais (próprio e de terceiros) que financiam os ativos da empresa. É a taxa mínima de retorno que um projeto deve gerar para agregar valor.</span>, que serve como uma taxa de desconto para avaliar a viabilidade de novos projetos e investimentos.</p>
                 </section>
 
                 <section id="wacc" class="p-6 rounded-lg shadow-lg border" style="background-color: var(--card-bg); border-color: var(--card-border);">
                     <h2>Calculando o Custo Médio Ponderado de Capital (WACC)</h2>
                     <p class="mb-4 text-lg">A fórmula geral para o WACC pondera o custo de cada fonte de capital:</p>
-                    <div class="formula">WACC = (<span class="interactive-var">Ke<span class="tooltip"><b>Ke (Custo do Capital Próprio):</b> É o retorno que os acionistas esperam.</span></span> × <span class="interactive-var">E/(D+E)<span class="tooltip"><b>Proporção de Capital Próprio:</b> A porcentagem do financiamento da empresa que vem dos acionistas (Equity).</span></span>) + (<span class="interactive-var">Kd<span class="tooltip"><b>Kd (Custo da Dívida):</b> Custo médio que a empresa paga por seus empréstimos.</span></span> × (1-<span class="interactive-var">T<span class="tooltip"><b>T (Alíquota de Impostos):</b> Impostos sobre o lucro. O termo (1-T) representa o "escudo fiscal" da dívida.</span></span>) × <span class="interactive-var">D/(D+E)<span class="tooltip"><b>Proporção de Dívida:</b> A porcentagem do financiamento da empresa que vem de terceiros (Debt).</span></span>)</div>
+                    <div class="formula">WACC = (<span class="interactive-var" data-title="Custo do Capital Próprio (Ke)">É o retorno que os acionistas esperam pelo risco que correm ao investir na empresa.</span> × <span class="interactive-var" data-title="Proporção de Capital Próprio">A porcentagem do financiamento da empresa que vem dos acionistas (Equity). Matematicamente: E/(D+E).</span>) + (<span class="interactive-var" data-title="Custo da Dívida (Kd)">Custo médio que a empresa paga por seus empréstimos e financiamentos (juros).</span> × (1-<span class="interactive-var" data-title="Alíquota de Impostos (T)">Impostos sobre o lucro. O termo (1-T) representa o "escudo fiscal", um benefício que surge porque os juros da dívida são despesas dedutíveis.</span>) × <span class="interactive-var" data-title="Proporção de Dívida">A porcentagem do financiamento da empresa que vem de terceiros (Debt). Matematicamente: D/(D+E).</span>)</div>
                     
                     <div class="mt-6 text-center">
                         <button class="g-to-ke-page font-bold py-2 px-4 rounded-lg transition-colors" style="background-color: var(--primary-btn-bg); color: var(--primary-btn-text);">
@@ -206,14 +250,20 @@
         <div id="page-ke" class="hidden container mx-auto p-4 sm:p-6 lg:p-8 max-w-5xl">
             <section class="p-6 rounded-lg shadow-lg border" style="background-color: var(--card-bg); border-color: var(--card-border);">
                 <h2>PÁGINA DE CÁLCULO DO CUSTO DE CAPITAL PRÓPRIO (KE)</h2>
-                <p class="mb-4 text-lg">O Ke é calculado com o modelo <span class="interactive-var">CAPM<span class="tooltip"><b>CAPM (Capital Asset Pricing Model):</b> Um modelo que descreve a relação entre o risco sistêmico e o retorno esperado para os ativos.</span></span>.</p>
-                <div class="formula">Ke = <span class="interactive-var">Rf<span class="tooltip"><b>Rf (Taxa Livre de Risco):</b> O retorno de um investimento sem risco (ex: títulos do governo de um país estável).</span></span> + <span class="interactive-var">β<span class="tooltip"><b>β (Beta):</b> Mede a volatilidade de um ativo em relação ao mercado.</span></span> × (<span class="interactive-var">Rm - Rf<span class="tooltip"><b>(Rm - Rf) ou Prêmio de Risco de Mercado:</b> O retorno adicional que os investidores esperam por investir no mercado de ações em vez de um ativo sem risco.</span></span>) + <span class="interactive-var">Risco-País<span class="tooltip"><b>Prêmio de Risco-País:</b> Compensação pelos riscos adicionais de se investir em um mercado emergente.</span></span></div>
+                <p class="mb-4 text-lg">O Ke é calculado com o modelo <span class="interactive-var" data-title="CAPM (Capital Asset Pricing Model)">Um modelo que descreve a relação entre o risco sistêmico e o retorno esperado para os ativos, sendo a base para o cálculo do custo de capital próprio.</span>. O processo envolve duas etapas: calcular o custo nominal e depois convertê-lo para um custo real.</p>
                 
-                 <div class="mt-6 text-center">
+                <h3>Etapa 1: Custo de Capital Próprio Nominal</h3>
+                <div class="formula">Ke nominal = <span class="interactive-var" data-title="Taxa Livre de Risco (Rf)">A base de toda a construção do custo de capital é a Taxa Livre de Risco (Rf​), que representa o retorno de um ativo com risco de inadimplência virtualmente nulo. <strong>Parâmetro e Valor:</strong> Utiliza-se o rendimento dos títulos do Tesouro Americano com vencimento em 10 anos (US 10Y bond yield). <strong>Justificativa:</strong> A escolha é justificada pelo fato de os títulos do tesouro americano serem considerados o investimento mais seguro do mundo. A metodologia opta por partir de uma taxa 'pura', permitindo que os riscos específicos do Brasil sejam adicionados em etapas posteriores de forma explícita.</span> + <span class="interactive-var" data-title="Coeficiente Beta (β)">O coeficiente Beta (β) mede a sensibilidade ou a volatilidade dos retornos de uma ação de uma empresa (ou setor) em relação aos movimentos do mercado como um todo. Um Beta menor que 1 indica menor volatilidade. <strong>Parâmetro e Fonte de Dados:</strong> O Beta é estimado a partir de uma amostra de empresas comparáveis, como as de saneamento (Water Utilities) dos Estados Unidos, com dados compilados por fontes como o professor Aswath Damodaran. <strong>Justificativa:</strong> Utiliza-se um proxy internacional pela ausência de um número suficiente de empresas comparáveis com capital aberto e liquidez no mercado de ações brasileiro. A premissa é que o risco sistemático do negócio é comparável, fazendo-se os devidos ajustes para o risco-país.</span> × (<span class="interactive-var" data-title="Prêmio de Risco de Mercado (MRP)">O Prêmio de Risco de Mercado (MRP), definido como a diferença entre o retorno esperado do mercado (Rm) e a taxa livre de risco (Rf​), representa o excesso de retorno que os investidores exigem para investir em uma carteira diversificada de ações em vez de um ativo sem risco. <strong>Fonte de Dados:</strong> Este valor é calculado utilizando os retornos anuais históricos de um índice de referência, como o S&P 500. A escolha de uma janela histórica longa (ex: 30 anos) confere maior estabilidade e previsibilidade ao parâmetro.</span>) + <span class="interactive-var" data-title="Prêmio de Risco-País (RP)">O Prêmio de Risco-País (Country Risk Premium) compensa os investidores pelos riscos adicionais inerentes a se investir em uma economia emergente como o Brasil. <strong>Fonte de Dados:</strong> O parâmetro é medido pelo spread do EMBI+Br (Emerging Markets Bond Index Plus - Brasil), o indicador mais utilizado para essa finalidade. Ele é adicionado tanto ao custo de capital próprio quanto ao de terceiros para garantir consistência.</span></div>
+                
+                <div class="mt-6 text-center">
                     <button class="g-to-beta-page font-bold py-2 px-4 rounded-lg transition-colors" style="background-color: var(--primary-btn-bg); color: var(--primary-btn-text);">
                         Calcular Componente <span class="font-extrabold">β</span> &rarr;
                     </button>
                 </div>
+                
+                <h3>Etapa 2: Conversão para Custo Real (Equação de Fisher)</h3>
+                <div class="formula">Ke real = [(1 + Ke nominal) / (1 + π)] - 1</div>
+
 
                 <div class="mt-8">
                     <h3>Calculadora Ke</h3>
@@ -221,8 +271,9 @@
                         <div class="grid md:grid-cols-2 gap-4">
                             <div><label for="rfInput" class="font-bold">Taxa Livre de Risco (Rf) em %</label><input type="number" id="rfInput" placeholder="Ex: 2.5" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
                             <div><label for="betaInput" class="font-bold">Beta (β)</label><input type="number" id="betaInput" placeholder="Calculado na pág. Beta" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
-                            <div><label for="rmInput" class="font-bold">Retorno de Mercado (Rm) em %</label><input type="number" id="rmInput" placeholder="Ex: 10" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
-                            <div><label for="prpInput" class="font-bold">Prêmio Risco-País em %</label><input type="number" id="prpInput" placeholder="Ex: 3" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
+                            <div><label for="mrpInput" class="font-bold">Prêmio Risco de Mercado (MRP) em %</label><input type="number" id="mrpInput" placeholder="Ex: 9.9" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
+                            <div><label for="prpInput" class="font-bold">Prêmio Risco-País (RP) em %</label><input type="number" id="prpInput" placeholder="Ex: 2.7" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
+                            <div><label for="piInput" class="font-bold">Inflação Esperada (π) em %</label><input type="number" id="piInput" placeholder="Ex: 1.75" class="w-full p-2 rounded-lg border-2" style="background-color: var(--card-bg); border-color: var(--card-border);"></div>
                         </div>
                         <button id="calculateKe" class="w-full font-bold p-3 rounded-lg text-xl" style="background-color: var(--secondary-btn-bg); color: var(--secondary-btn-text);">Calcular Ke</button>
                         <div id="keResult" class="text-center font-bold text-3xl mt-4" style="color: var(--title-color);"></div>
@@ -236,7 +287,7 @@
             <section class="p-6 rounded-lg shadow-lg border" style="background-color: var(--card-bg); border-color: var(--card-border);">
                 <h2>PÁGINA DE CÁLCULO DO BETA (β)</h2>
                 <p class="mb-4 text-lg">O Beta mede o risco sistêmico de um ativo. Ele é calculado pela razão entre a covariância do retorno do ativo com o retorno do mercado, e a variância do retorno do mercado.</p>
-                <div class="formula">β = <span class="interactive-var">Cov (Ra, Rm)<span class="tooltip"><b>Covariância (Ativo, Mercado):</b> Mede como os retornos de um ativo se movem em conjunto com os retornos do mercado.</span></span> / <span class="interactive-var">Var (Rm)<span class="tooltip"><b>Variância (Mercado):</b> Mede a dispersão dos retornos do mercado em torno de sua média.</span></span></div>
+                <div class="formula">β = <span class="interactive-var" data-title="Covariância (Ativo, Mercado)">Mede como os retornos de um ativo se movem em conjunto com os retornos do mercado. Uma covariância positiva indica que eles tendem a se mover na mesma direção.</span> / <span class="interactive-var" data-title="Variância (Mercado)">Mede a dispersão dos retornos do mercado em torno de sua média. Uma variância alta indica maior volatilidade do mercado.</span></div>
                  <div class="mt-8">
                     <h3>Calculadora Beta</h3>
                     <div class="p-6 rounded-xl border-2 space-y-4" style="background-color: var(--bg-color); border-color: var(--card-border);">
@@ -293,7 +344,6 @@
             link.addEventListener('click', () => navMenu.classList.add('hidden'));
         });
 
-
         // --- Page Navigation ---
         const pages = {
             home: document.getElementById('page-home'),
@@ -313,13 +363,35 @@
         document.querySelectorAll('.g-to-beta-page').forEach(btn => btn.addEventListener('click', () => showPage('beta')));
         backToHomeBtn.addEventListener('click', () => showPage('home'));
         
-        // --- Tooltip Logic ---
-        document.addEventListener('click', (e) => {
-            let isInteractiveVar = e.target.closest('.interactive-var');
-            document.querySelectorAll('.interactive-var').forEach(v => {
-                if (v !== isInteractiveVar) v.classList.remove('active');
+        // --- Modal Logic ---
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        
+        document.querySelectorAll('.interactive-var').forEach(v => {
+            v.addEventListener('click', () => {
+                const title = v.dataset.title;
+                // Treat the text content as the body, format it with <p> tags
+                const bodyText = v.textContent.replace(title, '').trim();
+                let bodyHtml = '';
+                if(bodyText) {
+                    bodyHtml = bodyText.split('\n').map(p => `<p>${p.trim()}</p>`).join('');
+                } else {
+                     // Fallback for elements that only have title and no separate body text in the span
+                    bodyHtml = `<p>${v.textContent}</p>`;
+                }
+                
+                modalTitle.textContent = title;
+                modalBody.innerHTML = bodyHtml;
+                modal.classList.add('active');
             });
-            if (isInteractiveVar) isInteractiveVar.classList.toggle('active');
+        });
+
+        modal.querySelector('.modal-close-btn').addEventListener('click', () => modal.classList.remove('active'));
+        modal.addEventListener('click', (e) => {
+            if(e.target === modal) {
+                 modal.classList.remove('active');
+            }
         });
 
         // --- Calculators ---
@@ -353,19 +425,30 @@
 
         // Ke Calculator
         document.getElementById('calculateKe').addEventListener('click', () => {
+            // Note: The MRP formula is MRP = Rm - Rf. The calculator uses MRP directly.
             const rf = parseFloat(document.getElementById('rfInput').value) / 100;
             const beta = parseFloat(document.getElementById('betaInput').value);
-            const rm = parseFloat(document.getElementById('rmInput').value) / 100;
+            const mrp = parseFloat(document.getElementById('mrpInput').value) / 100;
             const prp = parseFloat(document.getElementById('prpInput').value) / 100;
+            const pi = parseFloat(document.getElementById('piInput').value) / 100;
             const resultEl = document.getElementById('keResult');
             
-            if (isNaN(rf) || isNaN(beta) || isNaN(rm) || isNaN(prp)) {
+            if (isNaN(rf) || isNaN(beta) || isNaN(mrp) || isNaN(prp) || isNaN(pi)) {
                 resultEl.textContent = "Valores inválidos!"; return;
             }
-            const ke = rf + beta * (rm - rf) + prp;
-            resultEl.textContent = `Ke = ${(ke * 100).toFixed(2)}%`;
-            document.getElementById('keInput').value = (ke * 100).toFixed(2);
-            showAlert(`Ke (${(ke * 100).toFixed(2)}%) foi enviado para a calculadora WACC!`);
+            
+            // Etapa 1: Ke Nominal
+            const keNominal = rf + (beta * mrp) + prp;
+            
+            // Etapa 2: Ke Real
+            const keReal = ((1 + keNominal) / (1 + pi)) - 1;
+
+            resultEl.innerHTML = `
+                <span class="block text-xl">Ke Nominal = ${(keNominal * 100).toFixed(2)}%</span>
+                <span class="block text-3xl font-extrabold">Ke Real = ${(keReal * 100).toFixed(2)}%</span>
+            `;
+            document.getElementById('keInput').value = (keReal * 100).toFixed(2);
+            showAlert(`Ke Real (${(keReal * 100).toFixed(2)}%) foi enviado para a calculadora WACC!`);
             showPage('home');
         });
 

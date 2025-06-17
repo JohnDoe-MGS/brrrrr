@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo RC e suas Variáveis</title>
+    
+    <!-- Importação do Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Importação de Fontes do Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+
+    <!-- Importação da biblioteca de gráficos Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Importação da biblioteca de renderização matemática KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" xintegrity="sha384-n8MVd4RsNIU0KOVEMVIARBEEDYwIWN5Kutad+QH/rLLfYxBCPAOoCDMIPvfBCzaA" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" xintegrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" xintegrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+    <style>
+        /* Definindo variáveis de cor e fontes para um tema coeso */
+        :root {
+            --color-primary: #0A3D62;
+            --color-secondary: #3C6382;
+            --color-accent: #60A5FA; /* light blue */
+            --color-background: #F8F9FA;
+            --color-text: #343A40;
+            --color-text-light: #6C757D;
+            --color-highlight: #0A3D62;
+
+            --font-main: 'Poppins', sans-serif;
+            --font-mono: 'Roboto Mono', monospace;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.7;
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+        
+        h2 {
+           border-bottom: 3px solid var(--color-accent);
+           padding-bottom: 0.5rem;
+           margin-bottom: 1.5rem;
+        }
+
+        .section-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+        
+        .formula-box {
+            background-color: #e9ecef;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+            font-size: 1.25rem;
+            text-align: center;
+            color: var(--color-primary);
+        }
+
+        .highlight {
+            color: var(--color-highlight);
+            font-weight: 600;
+        }
+        
+        .interactive-button {
+            background-image: linear-gradient(to right, var(--color-secondary) 0%, var(--color-primary) 100%);
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(60, 99, 130, 0.4);
+        }
+        .interactive-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(60, 99, 130, 0.5);
+        }
+        
+        input[type="number"] {
+            border: 2px solid #ced4da;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-family: var(--font-mono);
+            transition: border-color 0.3s ease;
+            width: 100%;
+        }
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+        
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+
+        <!-- Cabeçalho Principal -->
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-blue-800 to-blue-500">Guia Interativo para Cálculo da RC</h1>
+            <p class="text-lg text-gray-600">Uma Análise Parametrizada da Remuneração do Capital (RC) e suas Variáveis</p>
+        </header>
+
+        <main>
+            <!-- Seção sobre o WACC com Gráfico -->
+            <section id="wacc" class="section-card">
+                <h2 class="text-3xl">Determinando a Taxa de Remuneração (WACC)</h2>
+                <p class="mb-6 text-gray-600">O Custo Médio Ponderado de Capital (WACC) é a taxa de retorno que incidirá sobre a BRR. A fórmula geral, que considera o custo do capital dos acionistas (Kₑ) e o custo da dívida (Kₐ), é:</p>
+                <div class="formula-box" id="wacc-formula"></div>
+                
+                <div class="grid md:grid-cols-2 gap-8 mt-8 items-center">
+                    <div>
+                        <h3 class="text-2xl mb-4">Estrutura e Resultado</h3>
+                        <p class="mb-4">Para a SANEAGO, a AGR definiu uma estrutura de capital de referência "ótima" e calculou o WACC final, que serve como parâmetro para a CODEGO.</p>
+                        <ul class="space-y-3">
+                            <li><span class="font-semibold">Capital Próprio (E):</span> <span class="highlight font-mono">73,64%</span> (Custo Kₑ de <span class="highlight">9,82%</span>)</li>
+                            <li><span class="font-semibold">Dívida (D):</span> <span class="highlight font-mono">26,36%</span> (Custo Kₐ de <span class="highlight">4,27%</span>)</li>
+                        </ul>
+                        <div class="mt-6 p-6 bg-blue-50 rounded-lg text-center">
+                            <h4 class="text-lg font-semibold text-blue-800">WACC Real Pós-Impostos</h4>
+                            <p class="text-5xl font-bold text-blue-600 font-mono">8,35%</p>
+                        </div>
+                    </div>
+                    <div>
+                         <canvas id="waccChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Seção de Cálculo Interativo da BRR -->
+            <section id="brr-calculator" class="section-card">
+                 <h2 class="text-3xl">Calculadora Interativa da Evolução da BRR</h2>
+                 <p class="mb-4 text-gray-600">A BRR evolui anualmente. Utilize a calculadora abaixo para projetar a BRR ao longo de um ciclo de 4 anos, com base na fórmula:</p>
+                 <div class="formula-box" id="brr-formula"></div>
+                 
+                 <div class="overflow-x-auto mt-6">
+                     <table class="min-w-full text-center">
+                        <thead class="border-b-2 border-gray-200">
+                            <tr>
+                                <th class="py-3 px-2">Descrição</th>
+                                <th class="py-3 px-2">Ano 1</th>
+                                <th class="py-3 px-2">Ano 2</th>
+                                <th class="py-3 px-2">Ano 3</th>
+                                <th class="py-3 px-2">Ano 4</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                             <tr class="border-b"><td class="py-3 px-2 text-left font-semibold">BRR ano anterior (BRR<sub>t-1</sub>)</td>
+                                <td><input type="number" id="brr0" placeholder="0.00"></td>
+                                <td><input type="number" id="brr1" readonly class="bg-gray-100"></td>
+                                <td><input type="number" id="brr2" readonly class="bg-gray-100"></td>
+                                <td><input type="number" id="brr3" readonly class="bg-gray-100"></td>
+                             </tr>
+                             <tr class="border-b"><td class="py-3 px-2 text-left font-semibold">(+) CAPEX Incorporado</td>
+                                <td><input type="number" id="capex1" placeholder="0.00"></td>
+                                <td><input type="number" id="capex2" placeholder="0.00"></td>
+                                <td><input type="number" id="capex3" placeholder="0.00"></td>
+                                <td><input type="number" id="capex4" placeholder="0.00"></td>
+                             </tr>
+                             <tr class="border-b"><td class="py-3 px-2 text-left font-semibold">(-) Depreciação (QRR)</td>
+                                 <td><input type="number" id="qrr1" placeholder="0.00"></td>
+                                 <td><input type="number" id="qrr2" placeholder="0.00"></td>
+                                 <td><input type="number" id="qrr3" placeholder="0.00"></td>
+                                 <td><input type="number" id="qrr4" placeholder="0.00"></td>
+                             </tr>
+                             <tr><td class="py-3 px-2 text-left font-semibold">(+) Variação do CGR</td>
+                                <td><input type="number" id="cgr1" placeholder="0.00"></td>
+                                <td><input type="number" id="cgr2" placeholder="0.00"></td>
+                                <td><input type="number" id="cgr3" placeholder="0.00"></td>
+                                <td><input type="number" id="cgr4" placeholder="0.00"></td>
+                             </tr>
+                        </tbody>
+                     </table>
+                     <div class="text-center mt-8">
+                        <button id="calculateBrrBtn" class="interactive-button">Calcular Evolução da BRR</button>
+                     </div>
+                     <div id="brr-results" class="mt-8"></div>
+                </div>
+            </section>
+
+            <!-- Seção de Cálculo Final da RC -->
+            <section id="rc-calculator" class="section-card">
+                <h2 class="text-3xl">Cálculo Final da Remuneração do Capital (RC)</h2>
+                <p class="mb-4 text-gray-600">Com a BRR e o WACC definidos, a Remuneração do Capital (RC) é apurada com a fórmula:</p>
+                <div class="formula-box" id="rc-formula"></div>
+                <div class="mt-8 grid md:grid-cols-3 gap-6 items-end">
+                    <div>
+                        <label for="brr-final" class="font-semibold block mb-2">Base de Remuneração (BRR<sub>t</sub>)</label>
+                        <input type="number" id="brr-final" placeholder="Insira o valor da BRR">
+                    </div>
+                    <div>
+                        <label for="wacc-final" class="font-semibold block mb-2">Taxa WACC (%)</label>
+                        <input type="number" id="wacc-final" value="8.35">
+                    </div>
+                    <div class="text-center">
+                         <button id="calculateRcBtn" class="interactive-button w-full">Calcular RC</button>
+                    </div>
+                </div>
+                <div id="rc-result" class="mt-8 text-center p-6 bg-blue-50 rounded-lg" style="display: none;">
+                    <h4 class="text-xl font-semibold text-blue-800">Valor da Remuneração do Capital (RC<sub>t</sub>)</h4>
+                    <p id="rc-value" class="text-4xl font-bold text-blue-600 font-mono mt-2"></p>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Renderiza todas as equações LaTeX
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false},
+                ],
+                throwOnError: false
+            });
+            
+            // Inserção das equações formatadas
+            katex.render("WACC = (K_e \\times E) + (K_d \\times (1 - T) \\times D)", document.getElementById('wacc-formula'), { throwOnError: false, displayMode: true });
+            katex.render("BRR_t = BRR_{t-1} + CAPEX_t - QRR_t + \\Delta CGR_t", document.getElementById('brr-formula'), { throwOnError: false, displayMode: true });
+            katex.render("RC_t = BRR_t \\times WACC", document.getElementById('rc-formula'), { throwOnError: false, displayMode: true });
+
+
+            // Configuração do Gráfico de WACC
+            const ctx = document.getElementById('waccChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Capital Próprio (E)', 'Dívida (D)'],
+                    datasets: [{
+                        label: 'Estrutura de Capital',
+                        data: [73.64, 26.36],
+                        backgroundColor: [
+                            'rgba(10, 61, 98, 0.8)', // Primary color
+                            'rgba(96, 165, 250, 0.8)'  // Accent color
+                        ],
+                        borderColor: [
+                            '#0A3D62',
+                            '#60A5FA'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14,
+                                    family: "'Poppins', sans-serif"
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Estrutura de Capital de Referência',
+                            font: {
+                                size: 18,
+                                family: "'Poppins', sans-serif"
+                            },
+                             color: '#343A40'
+                        }
+                    }
+                }
+            });
+
+            // Lógica da Calculadora da BRR
+            const calculateBrrBtn = document.getElementById('calculateBrrBtn');
+            calculateBrrBtn.addEventListener('click', () => {
+                let brr_anterior = parseFloat(document.getElementById('brr0').value) || 0;
+                const resultsDiv = document.getElementById('brr-results');
+                resultsDiv.innerHTML = '<h3 class="text-2xl mt-4 text-center font-semibold">Resultados da Evolução da BRR</h3><div class="grid md:grid-cols-4 gap-4 mt-4"></div>';
+                const resultsContainer = resultsDiv.querySelector('.grid');
+
+                for (let i = 1; i <= 4; i++) {
+                    const capex = parseFloat(document.getElementById(`capex${i}`).value) || 0;
+                    const qrr = parseFloat(document.getElementById(`qrr${i}`).value) || 0;
+                    const cgr = parseFloat(document.getElementById(`cgr${i}`).value) || 0;
+
+                    const brr_final = brr_anterior + capex - qrr + cgr;
+                    
+                    // Preenche o campo de BRR do próximo ano (se não for o último)
+                    if (i < 4) {
+                       document.getElementById(`brr${i}`).value = brr_final.toFixed(2);
+                    }
+                    
+                    // Mostra o resultado do ano atual
+                    resultsContainer.innerHTML += `
+                        <div class="bg-gray-50 p-4 rounded-lg text-center">
+                            <h4 class="font-bold text-lg">Ano ${i}</h4>
+                            <p class="text-2xl font-mono text-primary font-bold" style="color: var(--color-primary);">${brr_final.toFixed(2)}</p>
+                            <p class="text-sm text-gray-500">BRR Final</p>
+                        </div>
+                    `;
+                    
+                    brr_anterior = brr_final;
+                }
+            });
+            
+            // Lógica da Calculadora da RC
+            const calculateRcBtn = document.getElementById('calculateRcBtn');
+            calculateRcBtn.addEventListener('click', () => {
+                const brr = parseFloat(document.getElementById('brr-final').value) || 0;
+                const wacc = parseFloat(document.getElementById('wacc-final').value) || 0;
+                
+                const rc = brr * (wacc / 100);
+                
+                document.getElementById('rc-value').textContent = `R$ ${rc.toFixed(2)}`;
+                document.getElementById('rc-result').style.display = 'block';
+            });
+
+        });
+    </script>
+</body>
+</html>

@@ -3,331 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cálculo RC e suas Variáveis</title>
-    
-    <!-- Importação do Tailwind CSS -->
+    <title>Guia Técnico: Cálculo BRR e Remuneração para a CODEGO</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Importação de Fontes do Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto+Mono&display=swap" rel="stylesheet">
-
-    <!-- Importação da biblioteca de gráficos Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Importação da biblioteca de renderização matemática KaTeX -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" xintegrity="sha384-n8MVd4RsNIU0KOVEMVIARBEEDYwIWN5Kutad+QH/rLLfYxBCPAOoCDMIPvfBCzaA" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" xintegrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" xintegrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Definindo variáveis de cor e fontes para um tema coeso */
-        :root {
-            --color-primary: #0A3D62;
-            --color-secondary: #3C6382;
-            --color-accent: #60A5FA; /* light blue */
-            --color-background: #F8F9FA;
-            --color-text: #343A40;
-            --color-text-light: #6C757D;
-            --color-highlight: #0A3D62;
-
-            --font-main: 'Poppins', sans-serif;
-            --font-mono: 'Roboto Mono', monospace;
-        }
-
         body {
-            font-family: var(--font-main);
-            background-color: var(--color-background);
-            color: var(--color-text);
-            line-height: 1.7;
+            font-family: 'Inter', sans-serif;
         }
-
-        h1, h2, h3 {
-            font-weight: 700;
-            color: var(--color-primary);
+        h1, h2, h3, h4 {
+            font-weight: 600;
         }
-        
-        h2 {
-           border-bottom: 3px solid var(--color-accent);
-           padding-bottom: 0.5rem;
-           margin-bottom: 1.5rem;
-        }
-
-        .section-card {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-        }
-        
-        .formula-box {
-            background-color: #e9ecef;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-radius: 8px;
-            font-size: 1.25rem;
+        .formula {
+            font-family: monospace;
+            background-color: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
             text-align: center;
-            color: var(--color-primary);
+            font-size: 1.1rem;
+            color: #1f2937;
+            border: 1px solid #e5e7eb;
         }
-
-        .highlight {
-            color: var(--color-highlight);
-            font-weight: 600;
-        }
-        
-        .interactive-button {
-            background-image: linear-gradient(to right, var(--color-secondary) 0%, var(--color-primary) 100%);
-            color: white;
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(60, 99, 130, 0.4);
-        }
-        .interactive-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(60, 99, 130, 0.5);
-        }
-        
-        input[type="number"] {
-            border: 2px solid #ced4da;
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            font-family: var(--font-mono);
-            transition: border-color 0.3s ease;
-            width: 100%;
-        }
-        input[type="number"]:focus {
-            outline: none;
-            border-color: var(--color-accent);
-        }
-        
     </style>
 </head>
-<body class="antialiased">
+<body class="bg-gray-50 text-gray-800">
 
-    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
-
-        <!-- Cabeçalho Principal -->
-        <header class="text-center mb-16">
-            <h1 class="text-4xl md:text-5xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-blue-800 to-blue-500">Guia Interativo para Cálculo da RC</h1>
-            <p class="text-lg text-gray-600">Uma Análise Parametrizada da Remuneração do Capital (RC) e suas Variáveis</p>
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <header class="text-center mb-10">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">Guia Técnico para o Cálculo da Base de Remuneração Regulatória (BRR) e da Remuneração do Capital (RC)</h1>
+            <p class="mt-2 text-lg text-gray-600">Uma Análise Parametrizada pela Metodologia SANEAGO para a CODEGO</p>
         </header>
 
-        <main>
-            <!-- Seção sobre o WACC com Gráfico -->
-            <section id="wacc" class="section-card">
-                <h2 class="text-3xl">Determinando a Taxa de Remuneração (WACC)</h2>
-                <p class="mb-6 text-gray-600">O Custo Médio Ponderado de Capital (WACC) é a taxa de retorno que incidirá sobre a BRR. A fórmula geral, que considera o custo do capital dos acionistas (Kₑ) e o custo da dívida (Kₐ), é:</p>
-                <div class="formula-box" id="wacc-formula"></div>
-                
-                <div class="grid md:grid-cols-2 gap-8 mt-8 items-center">
+        <main class="space-y-12">
+            
+            <!-- Seção de Introdução -->
+            <section id="introducao" class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-4 text-blue-700 border-b pb-2">Introdução: O Enquadramento Regulatório da Remuneração do Capital</h2>
+                <p class="mb-4">A sustentabilidade econômico-financeira da prestação dos serviços de saneamento básico é um pilar fundamental para a universalização do acesso, conforme estabelecido pela Lei nº 11.445/2007 (Novo Marco Legal do Saneamento). No cerne dessa sustentabilidade está a correta definição da tarifa, que deve ser suficiente para cobrir os custos operacionais eficientes, permitir a recuperação dos investimentos e, crucialmente, remunerar de forma justa o capital empregado na infraestrutura.</p>
+                <p class="mb-4">Para a Companhia de Desenvolvimento Econômico de Goiás (CODEGO), o caminho para a definição de sua estrutura tarifária é explicitamente delineado por seu próprio regulamento, que exige a observância das determinações da Agência Goiana de Regulação (AGR) aplicáveis à SANEAGO. Portanto, a replicação da metodologia aplicada à SANEAGO não é apenas uma estratégia de eficiência, mas um requisito de conformidade.</p>
+                <p>Este guia técnico se dedicará a esmiuçar, passo a passo, a metodologia da Revisão Tarifária Periódica, utilizando como referência primária e definitiva a Nota Técnica Conjunta nº 12/2021 da SANEAGO, com foco exclusivo no cálculo da BRR e da RC.</p>
+            </section>
+
+            <!-- Seção BRR -->
+            <section id="brr" class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 text-blue-700 border-b pb-2">Desvendando a Base de Remuneração Regulatória (BRR)</h2>
+
+                <div class="space-y-8">
                     <div>
-                        <h3 class="text-2xl mb-4">Estrutura e Resultado</h3>
-                        <p class="mb-4">Para a SANEAGO, a AGR definiu uma estrutura de capital de referência "ótima" e calculou o WACC final, que serve como parâmetro para a CODEGO.</p>
-                        <ul class="space-y-3">
-                            <li><span class="font-semibold">Capital Próprio (E):</span> <span class="highlight font-mono">73,64%</span> (Custo Kₑ de <span class="highlight">9,82%</span>)</li>
-                            <li><span class="font-semibold">Dívida (D):</span> <span class="highlight font-mono">26,36%</span> (Custo Kₐ de <span class="highlight">4,27%</span>)</li>
+                        <h3 class="text-xl font-semibold mb-3">1.1. Definição e Composição Conceitual da BRR</h3>
+                        <blockquote class="border-l-4 border-blue-500 pl-4 py-2 my-4 bg-blue-50">
+                            <p class="text-gray-700 italic">"O valor atribuído pela entidade reguladora infranacional ao conjunto de bens vinculados e imprescindíveis à prestação dos serviços públicos de abastecimento de água e esgotamento sanitário." - ANA</p>
+                        </blockquote>
+                        <p class="mb-3">A BRR representa o montante de capital prudentemente investido pela concessionária que ainda não foi recuperado. É composta por:</p>
+                        <ul class="list-disc list-inside space-y-2 pl-4">
+                            <li><strong>Ativo Imobilizado Líquido:</strong> Valor dos ativos físicos e intangíveis em operação, líquido de sua depreciação acumulada.</li>
+                            <li><strong>Capital de Giro Regulatório (CGR):</strong> Recursos para financiar as operações do dia a dia.</li>
                         </ul>
-                        <div class="mt-6 p-6 bg-blue-50 rounded-lg text-center">
-                            <h4 class="text-lg font-semibold text-blue-800">WACC Real Pós-Impostos</h4>
-                            <p class="text-5xl font-bold text-blue-600 font-mono">8,35%</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-semibold mb-3">1.2. Etapa 1: Cálculo da Base de Ativos Imobilizados Líquida</h3>
+                        <p class="mb-2"><strong>Método de Valoração - Valor Novo de Reposição (VNR):</strong> A AGR adota o VNR, que corresponde ao custo para substituir um ativo existente por um novo com função similar, a preços de mercado atuais.</p>
+                        <p class="mb-2"><strong>Construção da Base Bruta e Deduções:</strong> O cálculo parte do VNR de todos os ativos, mas deduz itens como Ativos Não Onerosos, Ativos 100% Depreciados e Terrenos para chegar à base de depreciação (QRR).</p>
+                        <p class="mb-2"><strong>Cálculo da Depreciação (Quota de Reintegração Regulatória - QRR):</strong> Para a SANEAGO, a AGR definiu uma taxa de depreciação média de <strong>3,37% ao ano</strong>.</p>
+                        <p class="font-medium mt-4">A base de ativos líquida é calculada como:</p>
+                        <div class="formula">VNR Bruto - Depreciação Acumulada - Valor Líquido dos Ativos Não Onerosos</div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-semibold mb-3">1.3. Etapa 2: Cálculo do Capital de Giro Regulatório (CGR)</h3>
+                        <p>O CGR é apurado pela diferença entre ativos e passivos circulantes operacionais.</p>
+                        <div class="formula">CGR = Ativo Circulante Operacional (ACO) - Passivo Circulante Operacional (PCO)</div>
+                        <h4 class="text-lg font-semibold mt-6 mb-2">Tabela 1: Modelo de Cálculo do CGR para a CODEGO</h4>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Descrição</th>
+                                        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Ano 1</th>
+                                        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Ano 2</th>
+                                        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Ano 3</th>
+                                        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Ano 4</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-t"><td colspan="5" class="px-4 py-2 font-bold bg-gray-50">I - Ativo Circulante Operacional (ACO)</td></tr>
+                                    <tr class="border-t"><td class="px-4 py-2 pl-8">Disponível</td><td></td><td></td><td></td><td></td></tr>
+                                    <tr class="border-t"><td class="px-4 py-2 pl-8">Contas a receber de clientes</td><td></td><td></td><td></td><td></td></tr>
+                                    <tr class="border-t"><td class="px-4 py-2 pl-8">Estoques</td><td></td><td></td><td></td><td></td></tr>
+                                    
+                                    <tr class="border-t"><td colspan="5" class="px-4 py-2 font-bold bg-gray-50">II - Passivo Circulante Operacional (PCO)</td></tr>
+                                    <tr class="border-t"><td class="px-4 py-2 pl-8">Fornecedores</td><td></td><td></td><td></td><td></td></tr>
+                                    <tr class="border-t"><td class="px-4 py-2 pl-8">Obrigações Trabalhistas</td><td></td><td></td><td></td><td></td></tr>
+
+                                    <tr class="border-t bg-gray-100"><td class="px-4 py-2 font-bold">III - Capital de Giro Regulatório (CGR) [I - II]</td><td></td><td></td><td></td><td></td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+
                     <div>
-                         <canvas id="waccChart"></canvas>
+                        <h3 class="text-xl font-semibold mb-3">1.4. Etapa 3: Consolidando a BRR e sua Evolução</h3>
+                        <p>A BRR evolui ao longo do ciclo tarifário.</p>
+                        <div class="formula">BRR<sub>t</sub> = BRR<sub>t-1</sub> + CAPEX<sub>t</sub> - Depreciação<sub>t</sub> + VariaçãoCGR<sub>t</sub></div>
+                        <h4 class="text-lg font-semibold mt-6 mb-2">Tabela 2: Modelo Interativo da Evolução da BRR da CODEGO (R$ milhões)</h4>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Descrição</th>
+                                        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Ano 1</th>
+                                        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Ano 2</th>
+                                        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Ano 3</th>
+                                        <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Ano 4</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-t"><td class="px-4 py-2">BRR do ano anterior (BRR<sub>t-1</sub>)</td><td></td><td></td><td></td><td></td></tr>
+                                    <tr class="border-t"><td class="px-4 py-2">(+) CAPEX Incorporado</td><td class="px-4 py-2 text-gray-500 italic">[Inserir]</td><td class="px-4 py-2 text-gray-500 italic">[Inserir]</td><td class="px-4 py-2 text-gray-500 italic">[Inserir]</td><td class="px-4 py-2 text-gray-500 italic">[Inserir]</td></tr>
+                                    <tr class="border-t"><td class="px-4 py-2">(-) Depreciação (QRR)</td><td></td><td></td><td></td><td></td></tr>
+                                    <tr class="border-t"><td class="px-4 py-2">(+) Variação do CGR</td><td></td><td></td><td></td><td></td></tr>
+                                    <tr class="border-t bg-gray-100 font-bold"><td class="px-4 py-2">(=) BRR do final do ano (BRR<sub>t</sub>)</td><td></td><td></td><td></td><td></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </section>
             
-            <!-- Seção de Cálculo Interativo da BRR -->
-            <section id="brr-calculator" class="section-card">
-                 <h2 class="text-3xl">Calculadora Interativa da Evolução da BRR</h2>
-                 <p class="mb-4 text-gray-600">A BRR evolui anualmente. Utilize a calculadora abaixo para projetar a BRR ao longo de um ciclo de 4 anos, com base na fórmula:</p>
-                 <div class="formula-box" id="brr-formula"></div>
-                 
-                 <div class="overflow-x-auto mt-6">
-                     <table class="min-w-full text-center">
-                        <thead class="border-b-2 border-gray-200">
-                            <tr>
-                                <th class="py-3 px-2">Descrição</th>
-                                <th class="py-3 px-2">Ano 1</th>
-                                <th class="py-3 px-2">Ano 2</th>
-                                <th class="py-3 px-2">Ano 3</th>
-                                <th class="py-3 px-2">Ano 4</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                             <tr class="border-b"><td class="py-3 px-2 text-left font-semibold">BRR ano anterior (BRR<sub>t-1</sub>)</td>
-                                <td><input type="number" id="brr0" placeholder="0.00"></td>
-                                <td><input type="number" id="brr1" readonly class="bg-gray-100"></td>
-                                <td><input type="number" id="brr2" readonly class="bg-gray-100"></td>
-                                <td><input type="number" id="brr3" readonly class="bg-gray-100"></td>
-                             </tr>
-                             <tr class="border-b"><td class="py-3 px-2 text-left font-semibold">(+) CAPEX Incorporado</td>
-                                <td><input type="number" id="capex1" placeholder="0.00"></td>
-                                <td><input type="number" id="capex2" placeholder="0.00"></td>
-                                <td><input type="number" id="capex3" placeholder="0.00"></td>
-                                <td><input type="number" id="capex4" placeholder="0.00"></td>
-                             </tr>
-                             <tr class="border-b"><td class="py-3 px-2 text-left font-semibold">(-) Depreciação (QRR)</td>
-                                 <td><input type="number" id="qrr1" placeholder="0.00"></td>
-                                 <td><input type="number" id="qrr2" placeholder="0.00"></td>
-                                 <td><input type="number" id="qrr3" placeholder="0.00"></td>
-                                 <td><input type="number" id="qrr4" placeholder="0.00"></td>
-                             </tr>
-                             <tr><td class="py-3 px-2 text-left font-semibold">(+) Variação do CGR</td>
-                                <td><input type="number" id="cgr1" placeholder="0.00"></td>
-                                <td><input type="number" id="cgr2" placeholder="0.00"></td>
-                                <td><input type="number" id="cgr3" placeholder="0.00"></td>
-                                <td><input type="number" id="cgr4" placeholder="0.00"></td>
-                             </tr>
-                        </tbody>
-                     </table>
-                     <div class="text-center mt-8">
-                        <button id="calculateBrrBtn" class="interactive-button">Calcular Evolução da BRR</button>
+            <!-- Seção WACC -->
+            <section id="wacc" class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 text-blue-700 border-b pb-2">Determinando a Taxa de Remuneração (WACC)</h2>
+                <p class="mb-4">O Custo Médio Ponderado de Capital (WACC) representa o custo de oportunidade dos recursos financeiros. A metodologia define um WACC real e pós-impostos.</p>
+                <div class="formula">WACC = (Ke × E) + (Kd × (1-T) × D)</div>
+
+                <div class="grid md:grid-cols-2 gap-8 mt-6">
+                    <div>
+                        <h3 class="text-xl font-semibold mb-3">2.2. Custo do Capital Próprio (Ke) via CAPM</h3>
+                        <p>Estimado pelo Capital Asset Pricing Model (CAPM):</p>
+                        <div class="formula text-sm">Ke = Rf + β × (Prêmio Risco Mercado) + Prêmio Risco-País</div>
+                        <ul class="list-disc list-inside space-y-2 mt-4 pl-4">
+                            <li><strong>Taxa Livre de Risco (Rf):</strong> 2,14%</li>
+                            <li><strong>Beta (β):</strong> 0,7005 (menor volatilidade)</li>
+                            <li><strong>Prêmio de Risco de Mercado:</strong> 9,90%</li>
+                            <li><strong>Prêmio de Risco-País:</strong> 2,66%</li>
+                        </ul>
+                         <p class="mt-4 font-bold text-center text-blue-600 bg-blue-50 p-3 rounded-md">Ke Real Resultante = 9,82%</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold mb-3">2.3. Custo do Capital de Terceiros (Kd)</h3>
+                        <p>Representa o custo médio dos financiamentos. O fator (1-T) reflete o "escudo fiscal" da dívida.</p>
+                        <p class="mt-4 font-bold text-center text-blue-600 bg-blue-50 p-3 rounded-md">Kd Real Pós-Impostos = 4,27%</p>
+
+                        <h3 class="text-xl font-semibold mt-8 mb-3">2.4. Estrutura de Capital e WACC Final</h3>
+                        <p>A AGR definiu uma estrutura de referência ótima:</p>
+                        <ul class="list-disc list-inside space-y-2 mt-4 pl-4">
+                            <li><strong>Capital Próprio (E):</strong> 73,64%</li>
+                            <li><strong>Dívida (D):</strong> 26,36%</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center bg-gray-100 p-4 rounded-lg">
+                    <p class="font-semibold text-lg">Cálculo do WACC Final:</p>
+                    <p class="font-mono text-base md:text-lg mt-2">(9,82% × 0,7364) + (4,27% × 0,2636)</p>
+                    <p class="font-bold text-xl md:text-2xl mt-2 text-blue-700">WACC Final = 8,35%</p>
+                </div>
+            </section>
+            
+             <!-- Seção RC -->
+            <section id="rc" class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-6 text-blue-700 border-b pb-2">O Cálculo Final da Remuneração do Capital (RC)</h2>
+                <div>
+                    <h3 class="text-xl font-semibold mb-3">3.1. A Fórmula da Remuneração do Capital</h3>
+                    <p>A RC é o produto da base de ativos pelo custo de capital.</p>
+                    <div class="formula">RC<sub>t</sub> = BRR<sub>t</sub> × WACC</div>
+                </div>
+
+                <div class="mt-8">
+                     <h3 class="text-xl font-semibold mb-3">3.2. Simulação Completa e Análise de Impacto</h3>
+                     <h4 class="text-lg font-semibold mt-6 mb-2">Tabela 3: Simulação do Cálculo da RC Anual para a CODEGO (R$ milhões)</h4>
+                     <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">Ano do Ciclo</th>
+                                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">(A) BRR<sub>t</sub></th>
+                                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">(B) WACC</th>
+                                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-600">(C) Remuneração do Capital (RC<sub>t</sub>) [A × B]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-t"><td class="px-4 py-2">1</td><td></td><td class="px-4 py-2">8,35%</td><td></td></tr>
+                                <tr class="border-t"><td class="px-4 py-2">2</td><td></td><td class="px-4 py-2">8,35%</td><td></td></tr>
+                                <tr class="border-t"><td class="px-4 py-2">3</td><td></td><td class="px-4 py-2">8,35%</td><td></td></tr>
+                                <tr class="border-t"><td class="px-4 py-2">4</td><td></td><td class="px-4 py-2">8,35%</td><td></td></tr>
+                            </tbody>
+                        </table>
                      </div>
-                     <div id="brr-results" class="mt-8"></div>
                 </div>
+                 <div class="mt-8">
+                    <h3 class="text-xl font-semibold mb-3">3.3. Recomendações Estratégicas para a CODEGO</h3>
+                    <ul class="list-decimal list-inside space-y-3 pl-4">
+                        <li><strong>Inventário e Valoração de Ativos:</strong> Realizar inventário físico completo e valoração pelo método VNR.</li>
+                        <li><strong>Documentação do Capital de Giro:</strong> Mapear e documentar os componentes do CGR com base na metodologia.</li>
+                        <li><strong>Adoção dos Parâmetros do WACC:</strong> Adotar formalmente os parâmetros do WACC da SANEAGO para minimizar o risco regulatório.</li>
+                        <li><strong>Implementação de Controle Patrimonial Regulatório:</strong> Estabelecer um sistema de gestão de ativos focado na regulação.</li>
+                    </ul>
+                 </div>
             </section>
+            
+            <!-- Conclusão -->
+            <section id="conclusao" class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold mb-4 text-blue-700 border-b pb-2">Conclusão: Rumo à Sustentabilidade Tarifária com Transparência Regulatória</h2>
+                <p class="mb-4">A aderência estrita à metodologia da SANEAGO, conforme exigido pelo Art. 41 do regulamento da CODEGO, representa o caminho mais seguro, transparente e eficiente para a aprovação regulatória. A implementação bem-sucedida desta metodologia permitirá à CODEGO obter tarifas justas e sustentáveis, assegurando os recursos necessários para operar, manter e expandir seus serviços.</p>
+                <p>A correta remuneração do capital é condição indispensável para viabilizar os investimentos que levarão à universalização do saneamento em Goiás, promovendo o equilíbrio econômico-financeiro da companhia em benefício de toda a sociedade.</p>
+            </section>
+            
+            <!-- Referências -->
+            <footer class="mt-12 text-sm text-gray-600">
+                <h3 class="text-lg font-semibold mb-3 text-gray-800">Referências</h3>
+                <ul class="list-disc list-inside space-y-2">
+                    <li>Saneago-Nota-tecnica-1-2025.pdf</li>
+                    <li>Adasa - Agência Reguladora de Águas, Energia e Saneamento (...)</li>
+                    <li>RESOLUÇÃO Nº 001/2021-AGEPAR (...)</li>
+                    <li>Relevância de Prêmio por Risco País no Custo de ... - SciELO Brasil</li>
+                </ul>
+            </footer>
 
-            <!-- Seção de Cálculo Final da RC -->
-            <section id="rc-calculator" class="section-card">
-                <h2 class="text-3xl">Cálculo Final da Remuneração do Capital (RC)</h2>
-                <p class="mb-4 text-gray-600">Com a BRR e o WACC definidos, a Remuneração do Capital (RC) é apurada com a fórmula:</p>
-                <div class="formula-box" id="rc-formula"></div>
-                <div class="mt-8 grid md:grid-cols-3 gap-6 items-end">
-                    <div>
-                        <label for="brr-final" class="font-semibold block mb-2">Base de Remuneração (BRR<sub>t</sub>)</label>
-                        <input type="number" id="brr-final" placeholder="Insira o valor da BRR">
-                    </div>
-                    <div>
-                        <label for="wacc-final" class="font-semibold block mb-2">Taxa WACC (%)</label>
-                        <input type="number" id="wacc-final" value="8.35">
-                    </div>
-                    <div class="text-center">
-                         <button id="calculateRcBtn" class="interactive-button w-full">Calcular RC</button>
-                    </div>
-                </div>
-                <div id="rc-result" class="mt-8 text-center p-6 bg-blue-50 rounded-lg" style="display: none;">
-                    <h4 class="text-xl font-semibold text-blue-800">Valor da Remuneração do Capital (RC<sub>t</sub>)</h4>
-                    <p id="rc-value" class="text-4xl font-bold text-blue-600 font-mono mt-2"></p>
-                </div>
-            </section>
         </main>
-
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Renderiza todas as equações LaTeX
-            renderMathInElement(document.body, {
-                delimiters: [
-                    {left: '$$', right: '$$', display: true},
-                    {left: '$', right: '$', display: false},
-                ],
-                throwOnError: false
-            });
-            
-            // Inserção das equações formatadas
-            katex.render("WACC = (K_e \\times E) + (K_d \\times (1 - T) \\times D)", document.getElementById('wacc-formula'), { throwOnError: false, displayMode: true });
-            katex.render("BRR_t = BRR_{t-1} + CAPEX_t - QRR_t + \\Delta CGR_t", document.getElementById('brr-formula'), { throwOnError: false, displayMode: true });
-            katex.render("RC_t = BRR_t \\times WACC", document.getElementById('rc-formula'), { throwOnError: false, displayMode: true });
-
-
-            // Configuração do Gráfico de WACC
-            const ctx = document.getElementById('waccChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Capital Próprio (E)', 'Dívida (D)'],
-                    datasets: [{
-                        label: 'Estrutura de Capital',
-                        data: [73.64, 26.36],
-                        backgroundColor: [
-                            'rgba(10, 61, 98, 0.8)', // Primary color
-                            'rgba(96, 165, 250, 0.8)'  // Accent color
-                        ],
-                        borderColor: [
-                            '#0A3D62',
-                            '#60A5FA'
-                        ],
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            labels: {
-                                font: {
-                                    size: 14,
-                                    family: "'Poppins', sans-serif"
-                                }
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Estrutura de Capital de Referência',
-                            font: {
-                                size: 18,
-                                family: "'Poppins', sans-serif"
-                            },
-                             color: '#343A40'
-                        }
-                    }
-                }
-            });
-
-            // Lógica da Calculadora da BRR
-            const calculateBrrBtn = document.getElementById('calculateBrrBtn');
-            calculateBrrBtn.addEventListener('click', () => {
-                let brr_anterior = parseFloat(document.getElementById('brr0').value) || 0;
-                const resultsDiv = document.getElementById('brr-results');
-                resultsDiv.innerHTML = '<h3 class="text-2xl mt-4 text-center font-semibold">Resultados da Evolução da BRR</h3><div class="grid md:grid-cols-4 gap-4 mt-4"></div>';
-                const resultsContainer = resultsDiv.querySelector('.grid');
-
-                for (let i = 1; i <= 4; i++) {
-                    const capex = parseFloat(document.getElementById(`capex${i}`).value) || 0;
-                    const qrr = parseFloat(document.getElementById(`qrr${i}`).value) || 0;
-                    const cgr = parseFloat(document.getElementById(`cgr${i}`).value) || 0;
-
-                    const brr_final = brr_anterior + capex - qrr + cgr;
-                    
-                    // Preenche o campo de BRR do próximo ano (se não for o último)
-                    if (i < 4) {
-                       document.getElementById(`brr${i}`).value = brr_final.toFixed(2);
-                    }
-                    
-                    // Mostra o resultado do ano atual
-                    resultsContainer.innerHTML += `
-                        <div class="bg-gray-50 p-4 rounded-lg text-center">
-                            <h4 class="font-bold text-lg">Ano ${i}</h4>
-                            <p class="text-2xl font-mono text-primary font-bold" style="color: var(--color-primary);">${brr_final.toFixed(2)}</p>
-                            <p class="text-sm text-gray-500">BRR Final</p>
-                        </div>
-                    `;
-                    
-                    brr_anterior = brr_final;
-                }
-            });
-            
-            // Lógica da Calculadora da RC
-            const calculateRcBtn = document.getElementById('calculateRcBtn');
-            calculateRcBtn.addEventListener('click', () => {
-                const brr = parseFloat(document.getElementById('brr-final').value) || 0;
-                const wacc = parseFloat(document.getElementById('wacc-final').value) || 0;
-                
-                const rc = brr * (wacc / 100);
-                
-                document.getElementById('rc-value').textContent = `R$ ${rc.toFixed(2)}`;
-                document.getElementById('rc-result').style.display = 'block';
-            });
-
-        });
-    </script>
 </body>
 </html>
